@@ -49,10 +49,7 @@ class GatewayService:
             response = Response(str(user_data))
             response.set_cookie('SESSID', session_id)
             return response
-        else:
-            result = []
-            result.append("Username/password incorrect")
-            return json.dumps(result)
+        
         
     @http('POST','/logout')
     def logout(self, request):
@@ -66,31 +63,12 @@ class GatewayService:
                 response = Response("Logout Failed")
             return response
     
-    @http("POST", "/upload")
-    def save_file(self, request):
-        data = request.get_json()
-        file_path = 'Warehouse' + data['file_path']
-        log_response = {
-            'stats': '' , 
-            'confirm': False
-        }
-        if os.path.exists(file_path):
-            return 
-        else:
-            log_response['stats'] = 'Folder Created'
-            os.makedirs(file_path) 
-
-        for file in request.files.items():
-            _, file_storage = file
-            file_storage.save(f"Warehouse/{file_path}'s_Storage/{file_storage.filename}")
-        return json.dumps(log_response)
-
     @http("GET", "/<string:namafile>")
     def download_file(self, request,namafile):
         file_name, file_extension = os.path.splitext(namafile)
         if namafile is None:
-            return json.dumps({"ok": False})
+            return json.dumps({"Can't find file": False})
         else:
-            return Response(open(f"Storage/saved_{namafile}", "rb").read(), mimetype="application/{file_extension}")
+            return Response(open(f"saved_{namafile}", "rb").read(), mimetype="application/{file_extension}")
     
 

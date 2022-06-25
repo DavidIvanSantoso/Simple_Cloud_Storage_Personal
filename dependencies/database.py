@@ -59,7 +59,7 @@ class DatabaseProvider(DependencyProvider):
                 pool_size=32,
                 pool_reset_session=True,
                 host='127.0.0.1',
-                database='cloud_storage_db',
+                database='cloud_storage_personal',
                 user='root',
                 password=''
             )
